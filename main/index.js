@@ -255,7 +255,13 @@ ipcMain.on('tray:syncPath', (e, path, value) => {
   store.syncPath(path, value)
 })
 
-ipcMain.on('tray:ready', () => require('./api'))
+ipcMain.on('tray:ready', () => {
+  require('./api')
+
+  if (dev) {
+    startUpdater()
+  }
+})
 
 ipcMain.on('tray:updateRestart', () => {
   updater.quitAndInstall()
@@ -322,10 +328,6 @@ ipcMain.on('*:addFrame', (e, id) => {
 
 // if (process.platform !== 'darwin' && process.platform !== 'win32') app.disableHardwareAcceleration()
 app.on('ready', () => {
-  if (!dev) {
-    startUpdater()
-  }
-
   data()
   menu()
   windows.tray()
@@ -359,15 +361,6 @@ app.on('ready', () => {
       globalShortcut.unregister('Alt+/')
     }
   })
-  // store.observer(() => {
-  //   const altSlash = store('main.shortcuts.altSlash')
-  //   if (altSlash) {
-  //     globalShortcut.unregister('Alt+Space')
-  //     globalShortcut.register('Alt+Space', () => windows.openDapp())
-  //   } else {
-  //     globalShortcut.unregister('Alt+Space')
-  //   }
-  // })
 })
 
 ipcMain.on('tray:action', (e, action, ...args) => {
