@@ -5,9 +5,13 @@
   <br>
   F R A M E
   <br>
+  P R I V A C Y
+  <br>
   <br>
 </h2>
 <h3 align="center">System-wide Web3 for macOS, Windows and Linux :tada:</h3>
+<br>
+<h3 align="center">Unnecessary cross-app calls removed and additional configurations added :lock:</h3>
 <br>
 <h5 align="center">
   <a href="#features">Features</a> ⁃
@@ -33,7 +37,10 @@ Frame is a native web3 interface that lets you sign data, securely manage accoun
   - Frame stays out of the way and sits quietly in your menu bar until it's needed
 - **Cross Platform**
   - macOS, Windows and Linux!
-
+- **Privacy**
+  - Exception logging removed
+- **Configuration**
+  - Extra configuration options
 ### Talks
   - [Frame at Aracon](https://www.youtube.com/watch?v=wlZWLiy2GD0)
 

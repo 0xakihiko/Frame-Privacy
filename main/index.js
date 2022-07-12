@@ -13,7 +13,6 @@ process.env['BUNDLE_LOCATION'] = process.env.BUNDLE_LOCATION || path.resolve(__d
 // app.commandLine.appendSwitch('enable-transparent-visuals', true)
 // if (process.platform === 'linux') app.commandLine.appendSwitch('disable-gpu', true)
 
-const Sentry = require('@sentry/electron')
 const log = require('electron-log')
 const url = require('url')
 
@@ -49,19 +48,6 @@ function getCrashReportFields () {
   }, {})
 }
 
-Sentry.init({
-  // only use IPC from renderer process, not HTTP
-  ipcMode: Sentry.IPCMode.Classic,
-  dsn: 'https://7b09a85b26924609bef5882387e2c4dc@o1204372.ingest.sentry.io/6331069',
-  beforeSend: (evt) => {
-    return {
-      ...evt,
-      user: { ...evt.user, ip_address: undefined }, // remove IP address
-      tags: { ...evt.tags, 'frame.instance_id': store('main.instanceId') },
-      extra: getCrashReportFields()
-    }
-  }
-})
 
 // if (process.defaultApp) {
 //   if (process.argv.length >= 2) {
@@ -107,7 +93,6 @@ let closing = false
 process.on('uncaughtException', e => {
   log.error('uncaughtException', e)
 
-  Sentry.captureException(e)
 
   if (e.code === 'EPIPE') {
     log.error('uncaught EPIPE error', e)
