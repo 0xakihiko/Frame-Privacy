@@ -1,7 +1,7 @@
 {
-  "name": "frame",
-  "version": "0.5.0-beta.20",
-  "description": "System-wide web3",
+  "name": "frame-privacy",
+  "version": "0.5.0-beta.20-privacy",
+  "description": "System-wide web3. Unofficial package.",
   "main": "compiled/main",
   "scripts": {
     "clean": "npx rimraf dist bundle compiled .cache node_modules",
@@ -167,7 +167,7 @@
   "browserslist": [
     "last 1 Electron major version"
   ],
-  "repository": "github:floating/frame",
+  "repository": "github:0xakihiko/frame-privacy",
   "lavamoat": {
     "allowScripts": {
       "@aragon/wrapper>@aragon/os>@aragon/truffle-config-v4>@truffle/hdwallet-provider>@ethereumjs/common>ethereumjs-util>ethereum-cryptography>keccak": true,
