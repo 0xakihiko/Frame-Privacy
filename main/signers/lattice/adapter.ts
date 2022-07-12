@@ -8,7 +8,9 @@ import { Derivation } from '../Signer/derive'
 interface GlobalLatticeSettings {
   baseUrl: string,
   accountLimit: number,
-  derivation: Derivation
+  derivation: Derivation,
+  abiEndpoint: string,
+  functionHashEndpoint: string
 }
 
 interface LatticeSettings extends GlobalLatticeSettings {
@@ -29,11 +31,19 @@ function getGlobalLatticeSettings (): GlobalLatticeSettings {
   const accountLimit = store('main.latticeSettings.accountLimit')
   const derivation = store('main.latticeSettings.derivation')
   const endpointMode = store('main.latticeSettings.endpointMode')
+  const endpointAbi = store('main.latticeSettings.endpointAbiCustom')
+  const endpoint4Byte = store('main.latticeSettings.endpoint4ByteCustom')
   const baseUrl = (endpointMode === 'custom')
     ? store('main.latticeSettings.endpointCustom')
     : 'https://signing.gridpl.us'
-
-  return { baseUrl, derivation, accountLimit }
+  const abiEndpoint = (endpointAbi === 'custom')
+    ? store('main.latticeSettings.endpointAbiCustom')
+    : ''
+    
+  const functionHashEndpoint = (endpoint4Byte === 'custom')
+  ? store('main.latticeSettings.endpoint4ByteCustom')
+  : ''
+  return { baseUrl, derivation, accountLimit, abiEndpoint, functionHashEndpoint}
 }
 
 export default class LatticeAdapter extends SignerAdapter {
@@ -50,7 +60,7 @@ export default class LatticeAdapter extends SignerAdapter {
 
   open () {
     this.settingsObserver = store.observer(() => {
-      const { baseUrl, derivation, accountLimit } = getGlobalLatticeSettings()
+      const { baseUrl, derivation, accountLimit, abiEndpoint, functionHashEndpoint  } = getGlobalLatticeSettings()
 
       Object.values(this.knownSigners).forEach(lattice => {
         if (!lattice.connection) return
@@ -78,6 +88,9 @@ export default class LatticeAdapter extends SignerAdapter {
         } else if (needsUpdate) {
           this.emit('update', lattice)
         }
+
+        lattice.abiEndpoint = abiEndpoint;
+        lattice.functionHashEndpoint = functionHashEndpoint;
       })
     }, 'latticeSettings')
 

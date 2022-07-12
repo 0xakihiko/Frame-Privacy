@@ -65,6 +65,8 @@ export default class Lattice extends Signer {
   connection: Client | null = null
 
   accountLimit = 5
+  functionHashEndpoint = ""
+  abiEndpoint = ""
   tag = ''
 
   constructor (deviceId: string, name: string, tag: string) {
@@ -371,7 +373,7 @@ export default class Lattice extends Signer {
       const to = tx.to?.toString() ?? undefined
 
       const callDataDecoder = to
-        ? await Utils.fetchCalldataDecoder(tx.data, to, unsignedTx.chainId)
+        ? await Utils.fetchCalldataDecoder(tx.data, to, unsignedTx.chainId, this.abiEndpoint, this.functionHashEndpoint)
         : undefined
 
       const data = {
