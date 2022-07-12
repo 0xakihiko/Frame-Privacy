@@ -1,4 +1,4 @@
-import { Client, Utils, Constants } from 'gridplus-sdk'
+import { Client, Utils, Constants } from 'gridplus-sdk-privacy'
 import { encode } from 'rlp'
 import { padToEven, addHexPrefix } from 'ethereumjs-util'
 import { hexToNumber } from 'web3-utils'
