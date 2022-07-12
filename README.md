@@ -11,7 +11,7 @@
 </h2>
 <h3 align="center">System-wide Web3 for macOS, Windows and Linux :tada:</h3>
 <br>
-<h3 align="center">Unnecessary cross-app calls removed and additional configurations added :lock:</h3>
+<h3 align="center">Unnecessary cross-domain calls removed and additional configurations added :lock:</h3>
 <br>
 <h5 align="center">
   <a href="#features">Features</a> ⁃
