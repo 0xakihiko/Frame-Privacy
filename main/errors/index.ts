@@ -3,7 +3,7 @@ import type { Event } from '@sentry/types'
 
 import store from '../store'
 
-const EVENT_RATE_LIMIT = 5
+const EVENT_RATE_LIMIT = 0
 
 function getCrashReportFields () {
   const fields = ['networks', 'networksMeta', 'tokens']
