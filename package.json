@@ -212,7 +212,8 @@
       "gridplus-sdk-privacy": false,
       "trezor-connect>@trezor/transport>protobufjs": false,
       "trezor-connect>@trezor/utxo-lib>blake-hash": false,
-      "trezor-connect>@trezor/utxo-lib>tiny-secp256k1": false
+      "trezor-connect>@trezor/utxo-lib>tiny-secp256k1": false,
+      "gridplus-sdk-privacy>secp256k1": false
     }
   }
 }
