@@ -501,6 +501,19 @@ class Settings extends React.Component {
               When should Frame relock your hot signers?
             </div>
           </div>
+          <div className='signerPermission localSetting' style={{ zIndex: 198 }}>
+            <div className='signerPermissionControls'>
+              <div className='signerPermissionSetting'>Log reporting</div>
+              <div className={this.store('main.logreport') ? 'signerPermissionToggle signerPermissionToggleOn' : 'signerPermissionToggle'} onClick={_ => link.send('tray:action', 'setLogReport', !this.store('main.logreport'))}>
+                <div className='signerPermissionToggleSwitch' />
+              </div>
+            </div>
+            <div className='signerPermissionDetails'>
+              <span>
+                Help us improve Frame by sending sanitized exceptions
+              </span>
+            </div>
+          </div>
           {this.quit()}
           <div className='viewLicense' onClick={() => this.store.notify('openExternal', { url: 'https://github.com/floating/frame/blob/master/LICENSE' })}>View License</div>
           {this.appInfo()}
