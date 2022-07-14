@@ -182,7 +182,11 @@ const initial = {
       accountLimit: main('latticeSettings.accountLimit', 5),
       derivation: main('latticeSettings.derivation', 'standard'),
       endpointMode: main('latticeSettings.endpointMode', 'default'),
-      endpointCustom: main('latticeSettings.endpointCustom', '')
+      endpointCustom: main('latticeSettings.endpointCustom', ''),
+      endpointAbiMode: main('latticeSettings.endpointAbiMode', 'default'),
+      endpointAbiCustom: main('latticeSettings.endpointAbiCustom', ''),
+      endpoint4ByteMode: main('latticeSettings.endpoint4ByteMode', 'default'),
+      endpoint4ByteCustom: main('latticeSettings.endpoint4ByteCustom', '')
     },
     ledger: {
       derivation: main('ledger.derivation', 'live'),
