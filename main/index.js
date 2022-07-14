@@ -64,7 +64,7 @@ const updater = require('./updater').default
 const errors = require('./errors')
 
 require('./rpc')
-//errors.init()
+errors.init()
 
 // const clients = require('./clients')
 const signers = require('./signers').default
