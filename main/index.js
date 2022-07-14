@@ -1,4 +1,16 @@
-const { app, ipcMain, protocol, shell, clipboard, globalShortcut, BrowserWindow } = require('electron')
+const { app, ipcMain, protocol, shell, clipboard, globalShortcut, powerMonitor, BrowserWindow } = require('electron')
+const log = require('electron-log')
+
+log.transports.console.level = process.env.LOG_LEVEL || 'info'
+log.transports.file.level = ['development', 'test'].includes(process.env.NODE_ENV) ? false : 'verbose'
+
+const dev = process.env.NODE_ENV === 'development'
+const hasInstanceLock = app.requestSingleInstanceLock()
+
+if (!hasInstanceLock) {
+  log.info('another instance of Frame is running - exiting...')
+  app.exit(1)
+}
 
 app.commandLine.appendSwitch('enable-accelerated-2d-canvas', true)
 app.commandLine.appendSwitch('enable-gpu-rasterization', true)
@@ -13,41 +25,13 @@ process.env['BUNDLE_LOCATION'] = process.env.BUNDLE_LOCATION || path.resolve(__d
 // app.commandLine.appendSwitch('enable-transparent-visuals', true)
 // if (process.platform === 'linux') app.commandLine.appendSwitch('disable-gpu', true)
 
-const log = require('electron-log')
 const url = require('url')
-
-log.transports.console.level = process.env.LOG_LEVEL || 'info'
-log.transports.file.level = ['development', 'test'].includes(process.env.NODE_ENV) ? false : 'verbose'
 
 const data = require('./data')
 const windows = require('./windows')
 const menu = require('./menu')
 const store = require('./store').default
 const dapps = require('./dapps').default
-
-function getCrashReportFields () {
-  const fields = ['networks', 'networksMeta', 'tokens']
-
-  return fields.reduce((extra, field) => {
-    return { ...extra, [field]: JSON.stringify(store('main', field) || {}) }
-    // if (field === 'accounts') {
-    //   // scrub account information
-    //   const accountData = Object.fromEntries(Object.entries(store('main.accounts') || {}).map(([id, account]) => {
-    //     return [
-    //       truncateAddress(id),
-    //       {
-    //         ...account,
-    //         id: truncateAddress(account.id),
-    //         address: truncateAddress(account.address)
-    //       }
-    //     ]
-    //   }))
-
-    //   return { ...extra, accounts: JSON.stringify(accountData) }
-    // }
-  }, {})
-}
-
 
 // if (process.defaultApp) {
 //   if (process.argv.length >= 2) {
@@ -76,8 +60,12 @@ function getCrashReportFields () {
 const accounts = require('./accounts').default
 
 const launch = require('./launch')
-const updater = require('./updater')
+const updater = require('./updater').default
+const errors = require('./errors')
+
 require('./rpc')
+errors.init()
+
 // const clients = require('./clients')
 const signers = require('./signers').default
 const persist = require('./store/persist')
@@ -90,10 +78,8 @@ log.info('Node: v' + process.versions.node)
 // prevent showing the exit dialog more than once
 let closing = false
 
-process.on('uncaughtException', e => {
+process.on('uncaughtException', (e) => {
   log.error('uncaughtException', e)
-
-
   if (e.code === 'EPIPE') {
     log.error('uncaught EPIPE error', e)
     return
@@ -105,6 +91,22 @@ process.on('uncaughtException', e => {
     showUnhandledExceptionDialog(e.message, e.code)
   }
 })
+
+function startUpdater () {
+  powerMonitor.on('resume', () => {
+    log.debug('System resuming, starting updater')
+
+    updater.start()
+  })
+
+  powerMonitor.on('suspend', () => {
+    log.debug('System suspending, stopping updater')
+
+    updater.stop()
+  })
+
+  updater.start()
+}
 
 const externalWhitelist = [
   'https://frame.sh',
@@ -129,7 +131,11 @@ global.eval = () => { throw new Error(`This app does not support global.eval()`)
 
 ipcMain.on('tray:resetAllSettings', () => {
   persist.clear()
-  if (updater.updatePending) return updater.quitAndInstall(true, true)
+
+  if (updater.updateReady) {
+    return updater.quitAndInstall()
+  }
+
   app.relaunch()
   app.exit(0)
 })
@@ -151,8 +157,21 @@ ipcMain.on('tray:clipboardData', (e, data) => {
   if (data) clipboard.writeText(data)
 })
 
-ipcMain.on('tray:installAvailableUpdate', (e, install, dontRemind) => {
-  updater.installAvailableUpdate(install, dontRemind)
+ipcMain.on('tray:installAvailableUpdate', (e, version) => {
+  store.dontRemind(version)
+  windows.broadcast('main:action', 'updateBadge', '')
+
+  updater.fetchUpdate()
+})
+
+ipcMain.on('tray:dismissUpdate', (e, version, remind) => {
+  if (!remind) {
+    store.dontRemind(version)
+  }
+
+  windows.broadcast('main:action', 'updateBadge', '')
+
+  updater.dismissUpdate()
 })
 
 ipcMain.on('tray:removeAccount', (e, id) => {
@@ -228,10 +247,16 @@ ipcMain.on('tray:syncPath', (e, path, value) => {
   store.syncPath(path, value)
 })
 
-ipcMain.on('tray:ready', () => require('./api'))
+ipcMain.on('tray:ready', () => {
+  require('./api')
+
+  if (!dev) {
+    startUpdater()
+  }
+})
 
 ipcMain.on('tray:updateRestart', () => {
-  updater.quitAndInstall(true, true)
+  updater.quitAndInstall()
 })
 
 ipcMain.on('tray:refreshMain', () => windows.broadcast('main:action', 'syncMain', store('main')))
@@ -328,15 +353,6 @@ app.on('ready', () => {
       globalShortcut.unregister('Alt+/')
     }
   })
-  // store.observer(() => {
-  //   const altSlash = store('main.shortcuts.altSlash')
-  //   if (altSlash) {
-  //     globalShortcut.unregister('Alt+Space')
-  //     globalShortcut.register('Alt+Space', () => windows.openDapp())
-  //   } else {
-  //     globalShortcut.unregister('Alt+Space')
-  //   }
-  // })
 })
 
 ipcMain.on('tray:action', (e, action, ...args) => {
@@ -344,7 +360,18 @@ ipcMain.on('tray:action', (e, action, ...args) => {
   log.info('Tray sent unrecognized action: ', action)
 })
 
+app.on('second-instance', (event, argv, workingDirectory) => {
+  log.info(`second instance requested from directory: ${workingDirectory}`)
+  windows.showTray()
+})
 app.on('activate', () => windows.activate())
+
+app.on('before-quit', (evt) => {
+  if (!updater.updateReady) {
+    updater.stop()
+  }
+})
+
 app.on('will-quit', () => app.quit())
 app.on('quit', async () => {
   // await clients.stop()
