@@ -196,6 +196,18 @@ module.exports = {
   setLatticeEndpointCustom: (u, url) => {
     u('main.latticeSettings.endpointCustom', () => url)
   },
+  setLatticeEndpoint4ByteCustom: (u, byteUrl) => {
+    u('main.latticeSettings.endpoint4ByteCustom', () => byteUrl)
+  },
+  setLatticeEndpoint4ByteMode: (u, byteUrl) => {
+    u('main.latticeSettings.endpoint4ByteMode', () => byteUrl)
+  },
+  setLatticeEndpointAbiMode: (u, abi) => {
+    u('main.latticeSettings.endpointAbiMode', () => abi)
+  },
+  setLatticeEndpointAbiCustom: (u, abi) => {
+    u('main.latticeSettings.endpointAbiCustom', () => abi)
+  },
   setLatticeDerivation: (u, value) => {
     u('main.latticeSettings.derivation', () => value)
   },
