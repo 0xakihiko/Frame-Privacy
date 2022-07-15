@@ -175,8 +175,10 @@ const initial = {
     nonceAdjust: main('nonceAdjust', false),
     autohide: main('autohide', true),
     exceptionReporting: main('exceptionReporting', true),
-    pylonEndpointMode: main('privacy.pylonEndpointMode', 'default'),
-    pylonEndpointCustom: main('privacy.pylonEndpointCustom', 'pylon.link'),
+    privacy: {
+      pylonEndpointMode: main('pylonEndpointMode', 'default'),
+      pylonEndpointCustom: main('pylonEndpointCustom', 'pylon.link'),
+    },
     accountCloseLock: main('accountCloseLock', false),
     hardwareDerivation: main('hardwareDerivation', 'mainnet'),
     menubarGasPrice: main('menubarGasPrice', false),
