@@ -20,7 +20,7 @@
       },
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
-      "verifyUpdateCodeSignature": false,
+      "forceCodeSigning": false,
       "entitlements": "build/entitlements.mac.plist",
       "requirements": "build/electron-builder-requirements.txt"
     },
