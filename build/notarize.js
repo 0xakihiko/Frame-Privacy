@@ -8,6 +8,11 @@ module.exports = async function (params) {
   const appId = 'sh.frame.app' // Same appId in electron-builder
   const appPath = path.join(params.appOutDir, `${params.packager.appInfo.productFilename}.app`)
   if (!fs.existsSync(appPath)) throw new Error(`Cannot find application at: ${appPath}`)
+  // Don't notarize if notorization is not turned on
+  if(!process.env.NOTARIZE_APP)
+  {
+    return;
+  }
 
   console.log(`Notarizing ${appId} found at ${appPath}`)
 
