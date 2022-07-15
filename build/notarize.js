@@ -11,6 +11,7 @@ module.exports = async function (params) {
   // Don't notarize if notorization is not turned on
   if(!process.env.NOTARIZE_APP)
   {
+    console.log(`Skipped notirzation of app ${appId}`)
     return;
   }
 
