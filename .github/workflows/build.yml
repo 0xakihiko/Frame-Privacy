@@ -8,6 +8,7 @@ on:
 
 env:
  GH_TOKEN: ${{ secrets.GH_RELEASE_DEPLOYMENT_TOKEN }}
+ CSC_IDENTITY_AUTO_DISCOVERY: false
 
 jobs:
   create_draft_release:
