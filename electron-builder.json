@@ -25,7 +25,7 @@
     },
     "win": {
       "publisherName": "Frame Labs, Inc.",
-      "signAndEditExecutable": true
+      "signAndEditExecutable": false
     },
     "files": [
       "compiled",
