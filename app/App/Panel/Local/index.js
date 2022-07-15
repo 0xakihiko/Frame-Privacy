@@ -16,11 +16,7 @@ class Settings extends React.Component {
     const secondaryCustom = context.store('main.networks', this.networkType, this.network, 'connection.secondary.custom') || this.customMessage
     const latticeEndpoint = context.store('main.latticeSettings.endpointCustom')
     const latticeEndpointMode = context.store('main.latticeSettings.endpointMode')
-    const latticeEndpointAbiMode = context.store('main.latticeSettings.endpointAbiMode')
-    const latticeEndpoint4ByteMode = context.store('main.latticeSettings.endpoint4ByteMode')
-    const latticeEndpointAbi = context.store('main.latticeSettings.endpointAbiCustom')
-    const latticeEndpoint4Byte = context.store('main.latticeSettings.endpoint4ByteCustom')
-    this.state = { localShake: {}, primaryCustom, secondaryCustom, latticeEndpoint, latticeEndpointMode, latticeEndpointAbiMode, latticeEndpointAbi, latticeEndpoint4Byte, latticeEndpoint4ByteMode, resetConfirm: false, expandNetwork: false }
+    this.state = { localShake: {}, primaryCustom, secondaryCustom, latticeEndpoint, latticeEndpointMode, resetConfirm: false, expandNetwork: false }
     context.store.observer(() => {
       const { type, id } = context.store('main.currentNetwork')
       if (this.network !== id || this.networkType !== type) {
@@ -121,22 +117,7 @@ class Settings extends React.Component {
     // TODO: Update to target specific Lattice device rather than global
     this.inputLatticeTimeout = setTimeout(() => link.send('tray:action', 'setLatticeEndpointCustom', this.state.latticeEndpoint), 1000)
   }
-  inputLatticeEndpointAbi (e) {
-    e.preventDefault()
-    clearTimeout(this.inputLatticeAbiTimeout)
-    const value = e.target.value.replace(/\s+/g, '')
-    this.setState({ latticeEndpointAbi: value })
-    // TODO: Update to target specific Lattice device rather than global
-    this.inputLatticeAbiTimeout = setTimeout(() => link.send('tray:action', 'setLatticeEndpointAbiCustom', this.state.latticeEndpointAbi), 1000)
-  }
-  inputLatticeEndpoint4Byte (e) {
-    e.preventDefault()
-    clearTimeout(this.inputLattice4ByteTimeout)
-    const value = e.target.value.replace(/\s+/g, '')
-    this.setState({ latticeEndpoint4Byte: value })
-    // TODO: Update to target specific Lattice device rather than global
-    this.inputLattice4ByteTimeout = setTimeout(() => link.send('tray:action', 'setLatticeEndpoint4ByteCustom', this.state.latticeEndpoint4Byte), 1000)
-  }
+
   localShake (key) {
     const localShake = Object.assign({}, this.state.localShake)
     localShake[key] = true
@@ -436,7 +417,6 @@ class Settings extends React.Component {
               The number of lattice accounts to derive
             </div>
           </div>
-          
           <div className='signerPermission localSetting' style={{ zIndex: 202 }}>
             <div className='signerPermissionControls'>
               <div className='signerPermissionSetting'>Lattice Relay</div>
@@ -454,41 +434,7 @@ class Settings extends React.Component {
             </div>
           </div>
 
-          <div className='signerPermission localSetting' style={{ zIndex: 201 }}>
-            <div className='signerPermissionControls'>
-              <div className='signerPermissionSetting'>Lattice Abi Endpoint</div>
-              <Dropdown
-                  syncValue={this.store('main.latticeSettings.endpointAbiMode')}
-                  onChange={(value) => {
-                    link.send('tray:action', 'setLatticeEndpointAbiMode', value)
-                    this.setState({ latticeEndpointAbiMode: value })
-                  }}
-                  options={[{ text: 'Default', value: 'default' }, { text: 'Custom', value: 'custom' }]}
-              />
-            </div>
-            <div className={this.state.latticeEndpointAbiMode === 'custom' ? 'connectionCustomInput connectionCustomInputOn' : 'connectionCustomInput'}>
-              <input tabIndex='-1' placeholder={'Custom Abi Endpoint'} value={this.state.latticeEndpointAbi} onChange={e => this.inputLatticeEndpointAbi(e)} />
-            </div>
-          </div>
-
           <div className='signerPermission localSetting' style={{ zIndex: 200 }}>
-            <div className='signerPermissionControls'>
-              <div className='signerPermissionSetting'>Lattice 4byte Endpoint</div>
-              <Dropdown
-                  syncValue={this.store('main.latticeSettings.endpoint4ByteMode')}
-                  onChange={(value) => {
-                    link.send('tray:action', 'setLatticeEndpoint4ByteMode', value)
-                    this.setState({ latticeEndpoint4ByteMode: value })
-                  }}
-                  options={[{ text: 'Default', value: 'default' }, { text: 'Custom', value: 'custom' }]}
-              />
-            </div> 
-            <div className={this.state.latticeEndpoint4ByteMode === 'custom' ? 'connectionCustomInput connectionCustomInputOn' : 'connectionCustomInput'}>
-              <input tabIndex='-1' placeholder={'Custom 4Byte Endpoint'} value={this.state.latticeEndpoint4Byte} onChange={e => this.inputLatticeEndpoint4Byte(e)} />
-            </div>
-          </div>
-                  
-          <div className='signerPermission localSetting' style={{ zIndex: 199 }}>
             <div className='signerPermissionControls'>
               <div className='signerPermissionSetting'>Lock Hot Signers on</div>
               <Dropdown
@@ -503,14 +449,14 @@ class Settings extends React.Component {
           </div>
           <div className='signerPermission localSetting' style={{ zIndex: 198 }}>
             <div className='signerPermissionControls'>
-              <div className='signerPermissionSetting'>Log reporting</div>
-              <div className={this.store('main.logreport') ? 'signerPermissionToggle signerPermissionToggleOn' : 'signerPermissionToggle'} onClick={_ => link.send('tray:action', 'setLogReport', !this.store('main.logreport'))}>
+              <div className='signerPermissionSetting'>Log exceptions</div>
+              <div className={this.store('main.exceptionReporting') ? 'signerPermissionToggle signerPermissionToggleOn' : 'signerPermissionToggle'} onClick={_ => link.send('tray:action', 'setLogExceptions', !this.store('main.exceptionReporting'))}>
                 <div className='signerPermissionToggleSwitch' />
               </div>
             </div>
             <div className='signerPermissionDetails'>
               <span>
-                Help us improve Frame by sending sanitized exceptions
+                Help us improve Frame by sending us sanitized exceptions
               </span>
             </div>
           </div>

@@ -3,7 +3,7 @@ import type { Event } from '@sentry/types'
 
 import store from '../store'
 
-const EVENT_RATE_LIMIT = 0
+const EVENT_RATE_LIMIT = 5
 
 function getCrashReportFields () {
   const fields = ['networks', 'networksMeta', 'tokens']
@@ -44,7 +44,7 @@ export function init () {
     ipcMode: Sentry.IPCMode.Classic,
     dsn: 'https://7b09a85b26924609bef5882387e2c4dc@o1204372.ingest.sentry.io/6331069',
     beforeSend: (event: Event) => {
-      if (allowedEvents === 0 || !store('main.logreport')) {
+      if (allowedEvents === 0 || !store('main.exceptionReporting')) {
         return null
       }
 
