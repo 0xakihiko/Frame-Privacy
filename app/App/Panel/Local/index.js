@@ -497,7 +497,7 @@ class Settings extends React.Component {
               <input tabIndex='-1' placeholder={'Custom 4Byte Endpoint'} value={this.state.latticeEndpoint4Byte} onChange={e => this.inputLatticeEndpoint4Byte(e)} />
             </div>
           </div>
-          <div className='signerPermission localSetting' style={{ zIndex: 200 }}>
+          <div className='signerPermission localSetting' style={{ zIndex: 199 }}>
             <div className='signerPermissionControls'>
               <div className='signerPermissionSetting'>Lock Hot Signers on</div>
               <Dropdown
@@ -510,7 +510,7 @@ class Settings extends React.Component {
               When should Frame relock your hot signers?
             </div>
           </div>
-          <div className='signerPermission localSetting' style={{ zIndex: 199 }}>
+          <div className='signerPermission localSetting' style={{ zIndex: 198 }}>
               <div className='signerPermissionControls'>
                 <div className='signerPermissionSetting'>Pylon Endpoint</div>
                 <Dropdown
@@ -527,7 +527,7 @@ class Settings extends React.Component {
               </div>
             </div>
 
-            <div className='signerPermission localSetting' style={{ zIndex: 198 }}>
+            <div className='signerPermission localSetting' style={{ zIndex: 197 }}>
               <div className='signerPermissionControls'>
                 <div className='signerPermissionSetting'>Log exceptions</div>
                 <div className={this.store('main.exceptionReporting') ? 'signerPermissionToggle signerPermissionToggleOn' : 'signerPermissionToggle'} onClick={_ => link.send('tray:action', 'setExceptionReporting', !this.store('main.exceptionReporting'))}>
