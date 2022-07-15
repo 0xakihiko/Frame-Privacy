@@ -1,9 +1,9 @@
 import Lattice from '../../../../../main/signers/lattice/Lattice'
-import { Client } from 'gridplus-sdk'
+import { Client } from 'gridplus-sdk-privacy'
 import log from 'electron-log'
 import { Derivation } from '../../../../../main/signers/Signer/derive'
 
-jest.mock('gridplus-sdk')
+jest.mock('gridplus-sdk-privacy')
 
 let lattice
 
