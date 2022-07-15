@@ -52,11 +52,12 @@ class _Balances extends React.Component {
     const currentIndex = this.store('main.accounts', this.props.id, 'index')
     const address = this.store('main.accounts', this.props.id, 'addresses', currentIndex)
     const balance = this.store('balances', address)
+    const pylonLink = this.store('main.privacy.pylonEndpointCustom')
     const token = known[k]
     return (
       <div className='signerBalance' key={k} onMouseDown={() => this.setState({ selected: i })}>
         <div className='signerBalanceLogo'>
-          <img src={token.logoURI && `https://proxy.pylon.link?type=icon&target=${encodeURIComponent(token.logoURI)}`} />
+          <img src={token.logoURI && `https://proxy.${pylonLink}?type=icon&target=${encodeURIComponent(token.logoURI)}`} />
         </div>
         <div className='signerBalanceCurrency'>
           {token.symbol}

@@ -10,7 +10,8 @@ class CustomTokens extends React.Component {
   }
 
   render () {
-    const tokens = this.store('main.tokens.custom')    
+    const tokens = this.store('main.tokens.custom')  
+    const pylonLink = this.store('main.privacy.pylonEndpointCustom')
 
     return (
       <div className='notifyBoxWrap' onMouseDown={e => e.stopPropagation()}>
@@ -38,7 +39,7 @@ class CustomTokens extends React.Component {
                     <div className='customTokensListItemTitle'>
                       <div className='customTokensListItemName'>
                         <img 
-                          src={token.logoURI && `https://proxy.pylon.link?type=icon&target=${encodeURIComponent(token.logoURI)}`}
+                          src={token.logoURI && `https://proxy.${pylonLink}?type=icon&target=${encodeURIComponent(token.logoURI)}`}
                           value={token.symbol.toUpperCase()}
                           alt={token.symbol.toUpperCase()}
                         />

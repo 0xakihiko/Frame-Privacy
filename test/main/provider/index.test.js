@@ -183,8 +183,8 @@ describe('#send', () => {
               symbol: 'NEW', // 2-6 characters long
               decimals: 18
             },
-            rpcUrls: ['https://pylon.link'],
-            blockExplorerUrls: ['https://pylon.link'],
+            rpcUrls: ['https://${store(\'main.privacy.pylonEndpoint\')}'],
+            blockExplorerUrls: ['https://${store(\'main.privacy.pylonEndpoint\')}'],
             iconUrls: [''] // Currently ignored
           }
         ] 
@@ -215,8 +215,8 @@ describe('#send', () => {
               symbol: 'ETH', // 2-6 characters long
               decimals: 18
             },
-            rpcUrls: ['https://pylon.link'],
-            blockExplorerUrls: ['https://pylon.link'],
+            rpcUrls: ['https://${store(\'main.privacy.pylonEndpoint\')}'],
+            blockExplorerUrls: ['https://${store(\'main.privacy.pylonEndpoint\')}'],
             iconUrls: [''] // Currently ignored
           }
         ] 

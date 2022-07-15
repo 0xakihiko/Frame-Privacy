@@ -29,6 +29,7 @@ class Inventory extends React.Component {
   }
 
   render () {
+    const pylonEndpoint = this.store('main.privacy.pylonEndpointCustom')
     const inventory = this.store('main.inventory', this.props.id)
     const collections = Object.keys(inventory || {})
     return (
@@ -78,13 +79,13 @@ class Inventory extends React.Component {
                     <div className='inventoryPreview'>
                       {this.state.hoverAsset ? (
                         <div className='inventoryPreviewMedia'>
-                          {this.state.hoverAsset.img ? <img src={`https://proxy.pylon.link?type=nft&target=${encodeURIComponent(this.state.hoverAsset.img)}`} /> : null}
+                          {this.state.hoverAsset.img ? <img src={`https://proxy.${pylonEndpoint}type=nft&target=${encodeURIComponent(this.state.hoverAsset.img)}`} /> : null}
                         </div>
                       ) : (
                         <div 
                           className='inventoryPreviewCollection'
                           style={inventory[k].meta.image ? {
-                            backgroundImage: `url(https://proxy.pylon.link?type=nft&target=${encodeURIComponent(inventory[k].meta.image)})`
+                            backgroundImage: `url(https://proxy.${pylonEndpoint}?type=nft&target=${encodeURIComponent(inventory[k].meta.image)})`
                           } : {}}
                         />
                       )}
@@ -118,7 +119,7 @@ class Inventory extends React.Component {
                               })
                             }}
                           >
-                            {img ? <img src={`https://proxy.pylon.link?type=nft&target=${encodeURIComponent(img)}`} /> : null}
+                            {img ? <img src={`https://proxy.${pylonEndpoint}?type=nft&target=${encodeURIComponent(img)}`} /> : null}
                           </div>
                         )
                       })}

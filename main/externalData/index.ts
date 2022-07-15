@@ -23,7 +23,7 @@ const storeApi = {
 }
 
 export default function () {
-  const pylon = new Pylon('wss://data.pylon.link')
+  const pylon = new Pylon('wss://data.${pylonLink}')
 
   const inventory = Inventory(pylon, store)
   const rates = Rates(pylon, store)

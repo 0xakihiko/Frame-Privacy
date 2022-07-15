@@ -61,6 +61,7 @@ class Balance extends React.Component {
   }
 
   render () {
+    const pylonEndpoint = this.store('main.privacy.pylonEndpointCustom')
     const { symbol, balance, i, scanning } = this.props
     const change = parseFloat(balance.priceChange)
     const direction = change < 0 ? -1 : change > 0 ? 1 : 0
@@ -80,7 +81,7 @@ class Balance extends React.Component {
         <div className='signerBalanceInner' style={{ opacity: !scanning && !this.state.initialMount ? 1 : 0, transitionDelay: (0.05 * i) + 's' }}>
           <div className='signerBalanceLogo'>
             <img 
-              src={balance.logoURI && `https://proxy.pylon.link?type=icon&target=${encodeURIComponent(balance.logoURI)}`}
+              src={balance.logoURI && `https://proxy.${pylonEndpoint}?type=icon&target=${encodeURIComponent(balance.logoURI)}`}
               value={symbol.toUpperCase()}
               alt={symbol.toUpperCase()}
             />
