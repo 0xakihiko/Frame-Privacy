@@ -20,7 +20,9 @@ class Settings extends React.Component {
     const latticeEndpointAbiMode = context.store('main.latticeSettings.endpointAbiMode')
     const latticeEndpoint4Byte = context.store('main.latticeSettings.endpoint4ByteCustom')
     const latticeEndpoint4ByteMode = context.store('main.latticeSettings.endpoint4ByteMode')
-    this.state = { localShake: {}, primaryCustom, secondaryCustom, latticeEndpoint, latticeEndpointMode, latticeEndpointAbiMode, latticeEndpointAbi, latticeEndpoint4Byte, latticeEndpoint4ByteMode, resetConfirm: false, expandNetwork: false }, context.store.observer(() => {
+    const pylonEndpoint = context.store('main.privacy.pylonEndpointCustom')
+    const pylonEndpointMode = context.store('main.privacy.pylonEndpointMode')
+    this.state = { localShake: {}, primaryCustom, secondaryCustom, latticeEndpoint, latticeEndpointMode, latticeEndpointAbiMode, latticeEndpointAbi, latticeEndpoint4Byte, latticeEndpoint4ByteMode, pylonEndpoint, pylonEndpointMode, resetConfirm: false, expandNetwork: false }, context.store.observer(() => {
       const { type, id } = context.store('main.currentNetwork')
       if (this.network !== id || this.networkType !== type) {
         this.networkType = type
@@ -119,6 +121,15 @@ class Settings extends React.Component {
     this.setState({ latticeEndpoint: value })
     // TODO: Update to target specific Lattice device rather than global
     this.inputLatticeTimeout = setTimeout(() => link.send('tray:action', 'setLatticeEndpointCustom', this.state.latticeEndpoint), 1000)
+  }  
+  
+  inputPylonEndpoint (e) {
+    e.preventDefault()
+    clearTimeout(this.inputPylonTimeout)
+    const value = e.target.value.replace(/\s+/g, '')
+    this.setState({ pylonEndpoint: value })
+    // TODO: Update to target specific Lattice device rather than global
+    this.inputPylonTimeout = setTimeout(() => link.send('tray:action', 'setPylonEndpointCustom', this.state.pylonEndpoint), 1000)
   }
   inputLatticeEndpointAbi (e) {
     e.preventDefault()
@@ -136,6 +147,7 @@ class Settings extends React.Component {
     // TODO: Update to target specific Lattice device rather than global
     this.inputLattice4ByteTimeout = setTimeout(() => link.send('tray:action', 'setLatticeEndpoint4ByteCustom', this.state.latticeEndpoint4Byte), 1000)
   }
+
 
   localShake (key) {
     const localShake = Object.assign({}, this.state.localShake)
@@ -515,6 +527,23 @@ class Settings extends React.Component {
           <div className='viewLicense' onClick={() => this.store.notify('openExternal', { url: 'https://github.com/floating/frame/blob/master/LICENSE' })}>View License</div>
           {this.appInfo()}
         </div>
+
+        <div className='signerPermission localSetting' style={{ zIndex: 199 }}>
+            <div className='signerPermissionControls'>
+              <div className='signerPermissionSetting'>Pylon Endpoint</div>
+              <Dropdown
+                  syncValue={this.store('main.pylonEndpointMode')}
+                  onChange={(value) => {
+                    link.send('tray:action', 'setPylonEndpointMode', value)
+                    this.setState({ pylonEndpointMode: value })
+                  }}
+                  options={[{ text: 'Default', value: 'default' }, { text: 'Custom', value: 'custom' }, { text: 'Disabled', value: 'disabled' }]}
+              />
+            </div>
+            <div className={this.state.pylonEndpointMode === 'custom' ? 'connectionCustomInput connectionCustomInputOn' : 'connectionCustomInput'}>
+              <input tabIndex='-1' placeholder={'Custom Relay'} value={this.state.pylonEndpoint} onChange={e => this.inputPylonEndpoint(e)} />
+            </div>
+          </div>
       </div>
     )
   }

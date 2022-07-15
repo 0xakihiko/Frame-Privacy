@@ -208,6 +208,12 @@ module.exports = {
   setLatticeEndpointAbiCustom: (u, abi) => {
     u('main.latticeSettings.endpointAbiCustom', () => abi)
   },
+  setPylonEndpointCustom: (u, v) => {
+    u('main.pylonEndpointCustom', () => v)
+  },
+  setPylonEndpointMode: (u, v) => {
+    u('main.pylonEndpointMode', () => v)
+  },
   setLatticeDerivation: (u, value) => {
     u('main.latticeSettings.derivation', () => value)
   },
