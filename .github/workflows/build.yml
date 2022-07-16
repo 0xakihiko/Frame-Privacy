@@ -54,10 +54,10 @@ jobs:
         run: sudo apt install -y libudev-dev
       - name: create NPM config file
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ./.npmrc
-      - run: npm run setup
       - name: install dmg-license
         if: matrix.os == 'macos-latest'
         run: npm i dmg-license
+      - run: npm run setup
       - run: npm run compile
       - run: npm run test:unit:main -- --testTimeout=1000 --verbose
       - run: npm run test:unit:components
