@@ -37,15 +37,6 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-        include:
-          - os: macos-11
-            cert_key: APPLE_DEVELOPER_SIGNING_CERTIFICATE
-            cert_password_key: APPLE_CERTIFICATE_PASSWORD
-            apple_id_key: APPLE_ID
-            apple_id_password_key: APPLE_ID_PASSWORD
-          - os: windows-latest
-            cert_key: WINDOWS_CSC_CERTIFICATE
-            cert_password_key: WINDOWS_CSC_PASSWORD
 
     runs-on: ${{ matrix.os }}
 
@@ -64,6 +55,9 @@ jobs:
       - name: create NPM config file
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ./.npmrc
       - run: npm run setup
+      - name: install dmg-license
+        if: matrix.os == 'macos-latest'
+        run: npm i dmg-license
       - run: npm run compile
       - run: npm run test:unit:main -- --testTimeout=1000 --verbose
       - run: npm run test:unit:components
