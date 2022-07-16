@@ -176,8 +176,8 @@ const initial = {
     autohide: main('autohide', true),
     exceptionReporting: main('exceptionReporting', true),
     privacy: {
-      pylonEndpointMode: main('pylonEndpointMode', 'default'),
-      pylonEndpointCustom: main('pylonEndpointCustom', 'pylon.link'),
+      pylonEndpointMode: main('privacy.pylonEndpointMode', 'default'),
+      pylonEndpointCustom: main('privacy.pylonEndpointCustom', 'pylon.link'),
     },
     accountCloseLock: main('accountCloseLock', false),
     hardwareDerivation: main('hardwareDerivation', 'mainnet'),
