@@ -93,6 +93,8 @@ process.on('uncaughtException', (e) => {
 })
 
 function startUpdater () {
+  log.info("auto-updating disabled");
+  return;
   powerMonitor.on('resume', () => {
     log.debug('System resuming, starting updater')
 
