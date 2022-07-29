@@ -14,7 +14,7 @@ class PersistStore extends Conf {
     } else {
       options.cwd = defaultCwd
     }
-    electron.app.on('quit', () => this.writeUpdates())
+    if(electron.app != null) electron.app.on('quit', () => this.writeUpdates())
     super(options)
     setInterval(() => this.writeUpdates(), 30 * 1000)
   }

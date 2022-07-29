@@ -23,7 +23,8 @@ const storeApi = {
 }
 
 export default function () {
-  const pylon = new Pylon('wss://data.${pylonLink}')
+  const pylonEndpoint = store('main.privacy.pylonEndpointCustom')
+  const pylon = new Pylon(`wss://data.${pylonEndpoint}`)
 
   const inventory = Inventory(pylon, store)
   const rates = Rates(pylon, store)
