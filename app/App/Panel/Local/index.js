@@ -356,6 +356,21 @@ class Settings extends React.Component {
               </div>
             </div>
           ) : null}
+
+          <div className='signerPermission localSetting' style={{ zIndex: 198 }}>
+            <div className='signerPermissionControls'>
+              <div className='signerPermissionSetting'>Report errors</div>
+              <div className={this.store('main.privacy.errorReporting') ? 'signerPermissionToggle signerPermissionToggleOn' : 'signerPermissionToggle'} onClick={_ => link.send('tray:action', 'setErrorReporting', !this.store('main.privacy.errorReporting'))}>
+                <div className='signerPermissionToggleSwitch' />
+              </div>
+            </div>
+            <div className='signerPermissionDetails'>
+              <span>
+                Help improve Frame by sending anonymous exception data when errors happen
+              </span>
+            </div>
+          </div>
+
           <div className='signerPermission localSetting' style={{ zIndex: 208 }}>
             <div className='signerPermissionControls'>
               <div className='signerPermissionSetting'>Colorway</div>
@@ -371,6 +386,7 @@ class Settings extends React.Component {
               </span>
             </div>
           </div>
+
           <div className='signerPermission localSetting' style={{ zIndex: 207 }}>
             <div className='signerPermissionControls'>
               <div className='signerPermissionSetting'>Trezor Derivation</div>
@@ -524,20 +540,6 @@ class Settings extends React.Component {
               </div>
               <div className={this.state.pylonEndpointMode === 'custom' ? 'connectionCustomInput connectionCustomInputOn' : 'connectionCustomInput'}>
                 <input tabIndex='-1' placeholder={'Custom Pylon Endpoint'} value={this.state.pylonEndpoint} onChange={e => this.inputPylonEndpoint(e)} />
-              </div>
-            </div>
-
-            <div className='signerPermission localSetting' style={{ zIndex: 197 }}>
-              <div className='signerPermissionControls'>
-                <div className='signerPermissionSetting'>Log exceptions</div>
-                <div className={this.store('main.exceptionReporting') ? 'signerPermissionToggle signerPermissionToggleOn' : 'signerPermissionToggle'} onClick={_ => link.send('tray:action', 'setExceptionReporting', !this.store('main.exceptionReporting'))}>
-                  <div className='signerPermissionToggleSwitch' />
-                </div>
-              </div>
-              <div className='signerPermissionDetails'>
-                <span>
-                  Help us improve Frame by sending us sanitized exceptions
-                </span>
               </div>
             </div>
             {this.quit()}

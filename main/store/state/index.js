@@ -174,11 +174,6 @@ const initial = {
     reveal: main('reveal', false),
     nonceAdjust: main('nonceAdjust', false),
     autohide: main('autohide', true),
-    exceptionReporting: main('exceptionReporting', true),
-    privacy: {
-      pylonEndpointMode: main('privacy.pylonEndpointMode', 'default'),
-      pylonEndpointCustom: main('privacy.pylonEndpointCustom', 'pylon.link'),
-    },
     accountCloseLock: main('accountCloseLock', false),
     hardwareDerivation: main('hardwareDerivation', 'mainnet'),
     menubarGasPrice: main('menubarGasPrice', false),
@@ -199,6 +194,11 @@ const initial = {
     },
     trezor: {
       derivation: main('trezor.derivation', 'standard')
+    },
+    privacy: {
+      errorReporting: main('privacy.errorReporting', true),
+      pylonEndpointMode: main('privacy.pylonEndpointMode', 'default'),
+      pylonEndpointCustom: main('privacy.pylonEndpointCustom', 'pylon.link'),
     },
     accounts: main('accounts', {}),
     addresses: main('addresses', {}), // Should be removed after 0.5 release
